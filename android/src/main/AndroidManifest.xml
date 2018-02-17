@@ -1,3 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.geektime.rnonesignalandroid">
+    package="com.geektime.rnonesignalandroid"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <application>
+        <!-- The OneSignal is initiated with app id from JS so these values are unnecessary. -->
+        <meta-data android:name="onesignal_app_id" tools:node="remove" />
+        <meta-data android:name="onesignal_google_project_number" tools:node="remove" />
+
+    </application>
 </manifest>
