@@ -768,6 +768,10 @@ distributionUrl=https://services.gradle.org/distributions/gradle-2.14.1-all.zip
 ### Issue 3 - symbol(s) not found for architecture x86_64 and/or OneSignal/OneSignal.h file not found
 Please double check the [iOS Installation](#ios-installation) section as missing a step or entering an incorrect path will create these errors.
 
+Also, if you're in the position of setting up an existing project, and the project is using Cocoapods, check that there are no OneSignal references in the `Podfile`.
+
+References may include something like `pod 'OneSignal'` or `pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'`. If there are, clean and update the Pods (`rm -rf Pods/ && rm Podfile.lock && pod update`), clean the Xcode project, be sure you've followed the [iOS Installation](#ios-installation) section, and try building again.
+
 ### Issue 4 - Make `react-native-onesignal` work with `react-native-maps`
 If you have both `react native maps` and `react-native-onesignal` make sure you compile `react-native-maps` in the following way (android/app/build.gradle).
 
@@ -785,7 +789,7 @@ compile(project(':react-native-maps')){
 If you have detached from Expo or CRNA, you might need to change the versions of Google Play Services that this library is using to make it work nicely with ExpoKit (as of SDK23). See [this issue](https://github.com/geektimecoil/react-native-onesignal/issues/301#issuecomment-327346705).
 
 ### Manually updating iOS OneSignalNativeSDK
-When you install `react-native-onesignal` it will automaticly include a specific version of the OneSignal iOS native SDK that is known to work with it. Only follow the instructions below if there is a native OneSignal SDK fix you need that isn't included already in the latest `react-native-onesignal` update.
+When you install `react-native-onesignal` it will automatically include a specific version of the OneSignal iOS native SDK that is known to work with it. Only follow the instructions below if there is a native OneSignal SDK fix you need that isn't included already in the latest `react-native-onesignal` update.
 
 1. Download the [latest OneSignal iOS native](https://github.com/OneSignal/OneSignal-iOS-SDK/releases) release.
 2. In XCode, delete `OneSignalNativeSDK` under `Libraries/RCTOneSignal.xcodeproj`
