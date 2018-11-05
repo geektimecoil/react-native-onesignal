@@ -436,6 +436,7 @@ public class RNOneSignal extends ReactContextBaseJavaModule implements Lifecycle
    public void onHostDestroy() {
       OneSignal.removeNotificationOpenedHandler();
       OneSignal.removeNotificationReceivedHandler();
+      this.registeredEvents = false;
    }
 
    @Override
