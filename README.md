@@ -4,7 +4,7 @@
 
 ### React Native OneSignal SDK
 [![npm version](https://img.shields.io/npm/v/react-native-onesignal.svg)](https://www.npmjs.com/package/react-native-onesignal) [![npm downloads](https://img.shields.io/npm/dm/react-native-onesignal.svg)](https://www.npmjs.com/package/react-native-onesignal)
-
+[![Build Status](https://travis-ci.org/geektimecoil/react-native-onesignal.svg?branch=master)](https://travis-ci.org/geektimecoil/react-native-onesignal)
 ---
 
 [OneSignal](https://onesignal.com/) is a free push notification service for mobile apps. This SDK makes it easy to integrate your native React-Native iOS and/or Android apps with OneSignal.

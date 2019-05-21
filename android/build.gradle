@@ -21,7 +21,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
-
     implementation('com.onesignal:OneSignal:3.10.8') {
         // Exclude com.android.support(Android Support library) as the version range starts at 26.0.0
         //    This is due to compileSdkVersion defaulting to 23 which cant' be lower than the support library version

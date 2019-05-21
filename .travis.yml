@@ -1,14 +1,21 @@
 language: android
 jdk: oraclejdk8
 before_install:
-- nvm install 6
+- nvm install 8
 - node --version
 install:
-- cd examples && cd RNOneSignal && npm install
+- cd examples
+- cd RNOneSignal
+- npm install -g yarn
+- yarn
 android:
   components:
   - build-tools-23.0.1
+  - build-tools-26.0.2
+  - build-tools-27.0.3
   - android-23
+  - android-26
+  - android-27
   - extra-android-m2repository
   - extra-google-google_play_services
   - extra-google-m2repository
