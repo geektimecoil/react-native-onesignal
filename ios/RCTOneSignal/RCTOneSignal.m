@@ -76,8 +76,8 @@ OSNotificationOpenedResult* coldStartOSNotificationOpenedResult;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         if (coldStartOSNotificationOpenedResult) {
-            [self handleRemoteNotificationOpened:[coldStartOSNotificationOpenedResult stringify]];
-            coldStartOSNotificationOpenedResult = nil;
+            NSDictionary *json = [self jsonObjectWithString:[coldStartOSNotificationOpenedResult stringify]];
+            [RCTOneSignalEventEmitter setInitialNotification:json];
         }
     });
 }

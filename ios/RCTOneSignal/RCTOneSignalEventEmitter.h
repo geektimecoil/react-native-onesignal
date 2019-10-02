@@ -26,6 +26,7 @@ typedef NS_ENUM(NSInteger, OSNotificationEventTypes) {
 @interface RCTOneSignalEventEmitter : RCTEventEmitter <RCTBridgeModule>
 
 + (void)sendEventWithName:(NSString *)name withBody:(NSDictionary *)body;
++ (void)setInitialNotification:(NSDictionary *)body;
 + (BOOL)hasSetBridge;
 
 @end

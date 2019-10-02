@@ -33,6 +33,8 @@ static BOOL _didStartObserving = false;
 
 RCT_EXPORT_MODULE(RCTOneSignal)
 
+NSDictionary* initialNotification;
+
 #pragma mark RCTEventEmitter Subclass Methods
 
 -(instancetype)init {
@@ -85,6 +87,9 @@ RCT_EXPORT_MODULE(RCTOneSignal)
     [[NSNotificationCenter defaultCenter] postNotificationName:name object:nil userInfo:body];
 }
 
++ (void)setInitialNotification:(NSDictionary *)body {
+    initialNotification = body;
+}
 
 #pragma mark Exported Methods
 
@@ -349,6 +354,23 @@ RCT_EXPORT_METHOD(setLogLevel:(int)logLevel visualLogLevel:(int)visualLogLevel) 
 RCT_EXPORT_METHOD(setExternalUserId:(NSString *)externalId) {
     [OneSignal setExternalUserId:externalId];
 }
+
+RCT_REMAP_METHOD(getInitialNotification,
+                 getInitialNotificationWithResolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject)
+{
+    if (initialNotification) {
+        resolve(initialNotification);
+    } else {
+        NSDictionary *userInfo = @{
+                                   NSLocalizedDescriptionKey: NSLocalizedString(@"No initial notification", nil),
+                                   NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"Initial notification not found", nil)
+                                   };
+        NSError *error = [NSError errorWithDomain:@"RCTOneSignal" code:1 userInfo:userInfo];
+        reject(@"no_initial_notification", @"There was no notification on app opening", error);
+    }
+}
+
 
 RCT_EXPORT_METHOD(removeExternalUserId) {
     [OneSignal removeExternalUserId];

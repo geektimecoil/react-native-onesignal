@@ -468,4 +468,15 @@ export default class OneSignal {
         RNOneSignal.pauseInAppMessages(pause);
     }
 
+    static getInitialNotification() {
+        if (!checkIfInitialized()) return;
+        
+        //returns a promise
+        if (Platform.OS === 'android') {
+            console.log("This function is not supported on Android");
+            return
+        }
+        return RNOneSignal.getInitialNotification();
+    }
+
 }
