@@ -4,6 +4,18 @@
 import { NativeModules, NativeEventEmitter, Platform } from 'react-native';
 import invariant from 'invariant';
 
+
+const iosPlatform = Platform.OS === 'ios'
+const androidPlatform = Platform.OS === 'android'
+
+const errorMessages = {
+    androidOnly: "This function is Only supported on Android",
+    iosOnly: "This function is Only supported on iOS",
+    invalidCallback: "Must provide a valid callback",
+    deprecatedConfigure: "OneSignal: the 'configure' method has been deprecated. The 'ids' event is now triggered automatically.",
+    invalidListeners: "OneSignal only supports 'received', 'opened', 'ids', 'emailSubscription', and 'inAppMessageClicked' events"
+}
+
 const RNOneSignal = NativeModules.OneSignal;
 
 const OS_REMOTE_NOTIFICATION_RECEIVED = 'OneSignal-remoteNotificationReceived';
@@ -43,12 +55,10 @@ var _listeners = [];
 if (RNOneSignal != null) {
     oneSignalEventEmitter = new NativeEventEmitter(RNOneSignal);
 
-    for(var i = 0; i < eventBroadcastNames.length; i++) {
-        var eventBroadcastName = eventBroadcastNames[i];
-        var eventName = _eventNames[i];
-
+    eventBroadcastNames.forEach((eventBroadcastName, index) => {
+        const eventName = _eventNames[index];
         _listeners[eventName] = handleEventBroadcast(eventName, eventBroadcastName)
-    }
+    })
 }
 
 function handleEventBroadcast(type, broadcast) {
@@ -83,7 +93,7 @@ export default class OneSignal {
             type === IDS_AVAILABLE_EVENT ||
             type === EMAIL_SUBSCRIPTION_EVENT ||
             type === IN_APP_MESSAGE_CLICKED_EVENT,
-            'OneSignal only supports `received`, `opened`, `ids`, `emailSubscription`, and `inAppMessageClicked` events'
+            errorMessages.invalidListeners
         );
 
         _eventTypeHandler.set(type, handler);
@@ -98,9 +108,9 @@ export default class OneSignal {
         }
 
         if (type === IN_APP_MESSAGE_CLICKED_EVENT) {
-            if (Platform.OS === 'android') {
+            if (androidPlatform) {
                 RNOneSignal.initInAppMessageClickHandlerParams();
-            } else if (Platform.OS === 'ios') {
+            } else if (iosPlatform) {
                 RNOneSignal.setInAppMessageClickHandler();
             }
         }
@@ -122,7 +132,7 @@ export default class OneSignal {
             type === IDS_AVAILABLE_EVENT ||
             type === EMAIL_SUBSCRIPTION_EVENT ||
             type === IN_APP_MESSAGE_CLICKED_EVENT,
-            'OneSignal only supports `received`, `opened`, `ids`, `emailSubscription`, and `inAppMessageClicked` events'
+            errorMessages.invalidListeners
         );
 
         _eventTypeHandler.delete(type);
@@ -131,32 +141,32 @@ export default class OneSignal {
     static clearListeners() {
         if (!checkIfInitialized()) return;
 
-        for(var i = 0; i < _eventNames.length; i++) {
-            _listeners[_eventNames].remove();
-        }
+        _eventNames.forEach((eventName) => {
+            _listeners[eventName].remove();
+        })
     }
 
     static registerForPushNotifications() {
         if (!checkIfInitialized()) return;
 
-        if (Platform.OS === 'ios') {
+        if (iosPlatform) {
             RNOneSignal.registerForPushNotifications();
         } else {
-            console.log("This function is not supported on Android");
+            console.log(errorMessages.iosOnly);
         }
     }
 
     static promptForPushNotificationsWithUserResponse(callback) {
         if (!checkIfInitialized()) return;
 
-        if (Platform.OS === 'ios') {
+        if (iosPlatform) {
             invariant(
                 typeof callback === 'function',
-                'Must provide a valid callback'
+                errorMessages.invalidCallback
             );
             RNOneSignal.promptForPushNotificationsWithUserResponse(callback);
         } else {
-            console.log("This function is not supported on Android");
+            console.log(errorMessages.iosOnly);
         }
     }
 
@@ -164,7 +174,7 @@ export default class OneSignal {
         if (!checkIfInitialized()) return;
 
         var requestedPermissions = {};
-        if (Platform.OS === 'ios') {
+        if (iosPlatform) {
             if (permissions) {
                 requestedPermissions = {
                     alert: !!permissions.alert,
@@ -180,19 +190,17 @@ export default class OneSignal {
             }
             RNOneSignal.requestPermissions(requestedPermissions);
         } else {
-            console.log("This function is not supported on Android");
+            console.log(errorMessages.iosOnly);
         }
     }
 
-    /* deprecated */
-    static configure() {
-        console.warn("OneSignal: the `configure` method has been deprecated. The `ids` event is now triggered automatically.");
-    }
+    /** deprecated */
+    static configure() { console.warn(deprecatedConfigure); }
 
     static init(appId, iOSSettings) {
         if (!checkIfInitialized()) return;
 
-        if (Platform.OS === 'ios') {
+        if (iosPlatform) {
             RNOneSignal.initWithAppId(appId, iOSSettings);
         } else {
             RNOneSignal.init(appId);
@@ -202,24 +210,24 @@ export default class OneSignal {
     static checkPermissions(callback) {
         if (!checkIfInitialized()) return;
 
-        if (Platform.OS === 'ios') {
+        if (iosPlatform) {
             invariant(
                 typeof callback === 'function',
-                'Must provide a valid callback'
+                errorMessages.invalidCallback
             );
             RNOneSignal.checkPermissions(callback);
         } else {
-            console.log("This function is not supported on Android");
+            console.log(errorMessages.iosOnly);
         }
     }
 
     static promptForPushNotificationPermissions(callback) {
         if (!checkIfInitialized()) return;
 
-        if (Platform.OS === 'ios') {
+        if (iosPlatform) {
             RNOneSignal.promptForPushNotificationPermissions(callback);
         } else {
-            console.log('This function is not supported on Android');
+            console.log(errorMessages.iosOnly);
         }
     }
 
@@ -228,7 +236,7 @@ export default class OneSignal {
 
         invariant(
             typeof callback === 'function',
-            'Must provide a valid callback'
+            errorMessages.invalidCallback
         );
         RNOneSignal.getPermissionSubscriptionState(callback);
     }
@@ -270,20 +278,20 @@ export default class OneSignal {
     static enableVibrate(enable) {
         if (!checkIfInitialized()) return;
 
-        if (Platform.OS === 'android') {
+        if (androidPlatform) {
             RNOneSignal.enableVibrate(enable);
         } else {
-            console.log("This function is not supported on iOS");
+            console.log(errorMessages.iosOnly);
         }
     }
 
     static enableSound(enable) {
         if (!checkIfInitialized()) return;
 
-        if (Platform.OS === 'android') {
+        if (androidPlatform) {
             RNOneSignal.enableSound(enable);
         } else {
-            console.log("This function is not supported on iOS");
+            console.log(errorMessages.iosOnly);
         }
     }
 
@@ -295,11 +303,11 @@ export default class OneSignal {
             //since JS does not support function overloading,
             //unauthenticated setEmail calls will have emailAuthCode as the callback
 
-            RNOneSignal.setUnauthenticatedEmail(email, function(){});
+            RNOneSignal.setUnauthenticatedEmail(email, function () { });
         } else if (callback == undefined && typeof emailAuthCode == 'function') {
             RNOneSignal.setUnauthenticatedEmail(email, emailAuthCode);
         } else if (callback == undefined) {
-            RNOneSignal.setEmail(email, emailAuthCode, function(){});
+            RNOneSignal.setEmail(email, emailAuthCode, function () { });
         } else {
             RNOneSignal.setEmail(email, emailAuthCode, callback);
         }
@@ -310,7 +318,7 @@ export default class OneSignal {
 
         invariant(
             typeof callback === 'function',
-            'Must provide a valid callback'
+            errorMessages.invalidCallback
         );
 
         RNOneSignal.logoutEmail(callback);
@@ -338,11 +346,11 @@ export default class OneSignal {
     static inFocusDisplaying(displayOption) {
         if (!checkIfInitialized()) return;
 
-        if (Platform.OS === 'android') {
+        if (androidPlatform) {
             //Android: Set Display option of the notifications. displayOption is of type OSInFocusDisplayOption
             // 0 -> None, 1 -> InAppAlert, 2 -> Notification
             RNOneSignal.inFocusDisplaying(displayOption);
-        } else {
+        } else if (iosPlatform) {
             //iOS: displayOption is a number, 0 -> None, 1 -> InAppAlert, 2 -> Notification
             RNOneSignal.setInFocusDisplayType(displayOption);
         }
@@ -351,7 +359,7 @@ export default class OneSignal {
     static postNotification(contents, data, player_id, otherParameters) {
         if (!checkIfInitialized()) return;
 
-        if (Platform.OS === 'android') {
+        if (androidPlatform) {
             RNOneSignal.postNotification(JSON.stringify(contents), JSON.stringify(data), player_id, JSON.stringify(otherParameters));
         } else {
             RNOneSignal.postNotification(contents, data, player_id, otherParameters);
@@ -361,20 +369,20 @@ export default class OneSignal {
     static clearOneSignalNotifications() {
         if (!checkIfInitialized()) return;
 
-        if (Platform.OS === 'android') {
+        if (androidPlatform) {
             RNOneSignal.clearOneSignalNotifications();
         } else {
-            console.log("This function is not supported on iOS");
+            console.log(errorMessages.iosOnly);
         }
     }
 
     static cancelNotification(id) {
         if (!checkIfInitialized()) return;
 
-        if (Platform.OS === 'android') {
+        if (androidPlatform) {
             RNOneSignal.cancelNotification(id);
         } else {
-            console.log("This function is not supported on iOS");
+            console.log(errorMessages.iosOnly);
         }
     }
 
