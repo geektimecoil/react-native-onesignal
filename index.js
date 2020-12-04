@@ -382,6 +382,19 @@ export default class OneSignal {
         else
             RNOneSignal.postNotification(contents, data, player_id, otherParameters);
     }
+	
+	static getOneSignalNotificationsCount(callback) {
+        if (!checkIfInitialized()) return;
+
+        if (Platform.OS === 'android') {
+			if (callback === undefined)
+				callback = function(){};
+		
+            RNOneSignal.getOneSignalNotificationsCount(callback);
+        } else {
+            console.log("This function is not supported on iOS");
+        }
+    }
 
     static clearOneSignalNotifications() {
         if (!checkIfInitialized()) return;

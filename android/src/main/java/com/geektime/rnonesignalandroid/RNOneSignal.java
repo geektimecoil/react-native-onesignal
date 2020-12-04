@@ -349,6 +349,16 @@ public class RNOneSignal extends ReactContextBaseJavaModule implements Lifecycle
          e.printStackTrace();
       }
    }
+   
+   @ReactMethod
+   public void getOneSignalNotificationsCount(final Callback callback) {
+      OneSignal.getOneSignalNotificationsCount(new OneSignal.GetNotificationsCountHandler() {
+         @Override
+         public void notificationsAvailable(int count) {
+            callback.invoke(count);
+         }
+      });
+   }
 
    @ReactMethod
    public void clearOneSignalNotifications() {
