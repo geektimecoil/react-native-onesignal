@@ -130,13 +130,6 @@ export default class OneSignal {
         return deviceState;
     }
 
-    static userProvidedPrivacyConsent() {
-        if (!checkIfInitialized(RNOneSignal)) return;
-
-        //returns a promise
-        return RNOneSignal.userProvidedPrivacyConsent();
-    }
-
     /* T A G S */
 
     static sendTag(key, value) {
@@ -352,16 +345,20 @@ export default class OneSignal {
         RNOneSignal.sendOutcomeWithValue(name, Number(value), handler);
     }
 
-    /* O T H E R  F U N C T I O N S */
+    /* P R I V A C Y  C O N S E N T */
 
-    static setLogLevel(nsLogLevel, visualLogLevel) {
-        if (!checkIfInitialized(RNOneSignal)) return;
+    static userProvidedPrivacyConsent() {
+        if (!checkIfInitialized(RNOneSignal)) return Promise.resolve();
 
-        RNOneSignal.setLogLevel(nsLogLevel, visualLogLevel);
+        //returns a promise
+        return RNOneSignal.userProvidedPrivacyConsent();
     }
 
-    static clearHandlers() {
-        eventManager.clearHandlers();
+    static requiresUserPrivacyConsent() {
+        if (!checkIfInitialized(RNOneSignal)) return Promise.resolve();
+
+        //returns a promise
+        return RNOneSignal.requiresUserPrivacyConsent();
     }
 
     static setRequiresUserPrivacyConsent(required) {
@@ -374,5 +371,17 @@ export default class OneSignal {
         if (!checkIfInitialized(RNOneSignal)) return;
 
         RNOneSignal.provideUserConsent(granted);
+    }
+
+    /* O T H E R  F U N C T I O N S */
+
+    static setLogLevel(nsLogLevel, visualLogLevel) {
+        if (!checkIfInitialized(RNOneSignal)) return;
+
+        RNOneSignal.setLogLevel(nsLogLevel, visualLogLevel);
+    }
+
+    static clearHandlers() {
+        eventManager.clearHandlers();
     }
 }

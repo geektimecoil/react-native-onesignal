@@ -201,12 +201,6 @@ declare module 'react-native-onesignal' {
         getDeviceState(): Promise<DeviceState>;
 
         /**
-         * Did the user provide privacy consent for GDPR purposes.
-         * @returns Promise<boolean>
-         */
-        userProvidedPrivacyConsent(): Promise<boolean>;
-
-        /**
          * Tag a user based on an app event of your choosing so they can be targeted later via segments.
          * @param  {string} key
          * @param  {string} value
@@ -382,6 +376,18 @@ declare module 'react-native-onesignal' {
          * @returns void
          */
         clearHandlers(): void;
+
+        /**
+         * Did the user provide privacy consent for GDPR purposes.
+         * @returns Promise<boolean>
+         */
+        userProvidedPrivacyConsent(): Promise<boolean>;
+
+        /**
+         * True if the application requires user privacy consent, false otherwise
+         * @returns Promise<boolean>
+         */
+        requiresUserPrivacyConsent(): Promise<boolean>;
 
         /**
          * For GDPR users, your application should call this method before setting the App ID.

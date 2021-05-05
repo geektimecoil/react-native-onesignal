@@ -119,6 +119,14 @@ class OSButtons extends React.Component<Props, State> {
             }
         )
 
+        const appRequireUserProvideConsent = renderButtonView(
+            "is Privacy Consent Required",
+            color,
+            async () => {
+                let appRequiresUserPrivacyConsent = await OneSignal.requiresUserPrivacyConsent();
+                loggingFunction(`Application requires privacy consent: ${appRequiresUserPrivacyConsent}`);
+         })
+
         const provideUserConsentButton = renderButtonView(
             this.state.provideUserConsent ? "Reject User Consent" : "Provide User Consent", color, async () => {
                 loggingFunction(`Provide User Consent: ${!this.state.provideUserConsent}`);
@@ -134,6 +142,7 @@ class OSButtons extends React.Component<Props, State> {
         elements.push(
             deviceStateButton,
             requireUserProvideConsent,
+            appRequireUserProvideConsent,
             provideUserConsentButton,
             userProvidedPrivacyConsent,
             );
