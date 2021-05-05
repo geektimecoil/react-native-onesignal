@@ -176,6 +176,13 @@ declare module 'react-native-onesignal' {
         disablePush(disable: boolean): void;
 
         /**
+         * Android Only. If notifications are disabled for your application, unsubscribe the user from OneSignal.
+         * @param  {boolean} unsubscribe
+         * @returns void
+         */
+        unsubscribeWhenNotificationsAreDisabled(unsubscribe: boolean): void;
+
+        /**
          * True if the application has location share activated, false otherwise
          * @returns Promise<boolean>
          */

@@ -92,6 +92,16 @@ export default class OneSignal {
         RNOneSignal.disablePush(disable);
     }
 
+    static unsubscribeWhenNotificationsAreDisabled(unsubscribe) {
+        if (!checkIfInitialized(RNOneSignal)) return;
+
+        if (Platform.OS === 'android') {
+            RNOneSignal.unsubscribeWhenNotificationsAreDisabled(unsubscribe);
+        } else {
+            console.log("unsubscribeWhenNotificationsAreDisabled: this function is not supported on iOS");
+        }
+    }
+
     /* L O C A T I O N */
 
     static isLocationShared() {

@@ -12,6 +12,7 @@ export interface Props {
 
 export interface State {
     isSubscribed: boolean;
+    unSubscribedWhenNotificationDisabled: boolean;
     isLocationShared: boolean;
     provideUserConsent: boolean;
     requireUserConsent: boolean;
@@ -26,6 +27,7 @@ class OSButtons extends React.Component<Props, State> {
 
         this.state = {
             isSubscribed: subscribeFields.isSubscribed,
+            unSubscribedWhenNotificationDisabled: true,
             isLocationShared: true,
             provideUserConsent: false,
             requireUserConsent: false,
@@ -42,7 +44,7 @@ class OSButtons extends React.Component<Props, State> {
     createSubscribeFields() {
         const { subscribeFields, loggingFunction } = this.props;
         const { isSubscribed } = subscribeFields;
-        const { isLocationShared } = this.state;
+        const { unSubscribedWhenNotificationDisabled, isLocationShared } = this.state;
         const color = '#D45653';
         const elements = [];
 
@@ -52,6 +54,16 @@ class OSButtons extends React.Component<Props, State> {
             () => {
                 loggingFunction(`Is Push Disabled: ${isSubscribed}`);
                 OneSignal.disablePush(isSubscribed);
+            }
+        );
+    
+        const unsubscribeWhenNotificationsAreDisabledButton = renderButtonView(
+            unSubscribedWhenNotificationDisabled ? "Unsubscribe When Notifications Disabled" : "Subscribe when notification disabled",
+            color,
+            () => {
+                loggingFunction(`Is application unsubscribed when notification disabled: ${unSubscribedWhenNotificationDisabled}`);
+                OneSignal.unsubscribeWhenNotificationsAreDisabled(unSubscribedWhenNotificationDisabled);
+                this.setState({ unSubscribedWhenNotificationDisabled : !unSubscribedWhenNotificationDisabled });
             }
         );
 
@@ -90,7 +102,7 @@ class OSButtons extends React.Component<Props, State> {
             }
         );
 
-        elements.push(subscribedButton, locationShared, setLocationShared, promptLocationButton);
+        elements.push(subscribedButton, unsubscribeWhenNotificationsAreDisabledButton, locationShared, setLocationShared, promptLocationButton);
 
         if (Platform.OS === 'ios') {
             elements.push(promptForPush);
