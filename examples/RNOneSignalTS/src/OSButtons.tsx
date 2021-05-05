@@ -78,6 +78,17 @@ class OSButtons extends React.Component<Props, State> {
             }
         );
 
+        const registerForProvisionalAuthorization = renderButtonView(
+            "Register For Provisional Authorization",
+            color,
+            () => {
+                loggingFunction("Register For Provisional Authorization with user response...");
+                OneSignal.registerForProvisionalAuthorization(response => {
+                    loggingFunction(`User response: ${response}`);
+                });
+            }
+        );
+
         const locationShared = renderButtonView("is Location Shared", color, async () => {
             let appHasLocationShared = await OneSignal.isLocationShared();
             loggingFunction(`Application has location shared active: ${appHasLocationShared}`);
@@ -102,7 +113,10 @@ class OSButtons extends React.Component<Props, State> {
             }
         );
 
-        elements.push(subscribedButton, unsubscribeWhenNotificationsAreDisabledButton, locationShared, setLocationShared, promptLocationButton);
+        elements.push(subscribedButton, 
+            unsubscribeWhenNotificationsAreDisabledButton, 
+            registerForProvisionalAuthorization,
+            locationShared, setLocationShared, promptLocationButton);
 
         if (Platform.OS === 'ios') {
             elements.push(promptForPush);

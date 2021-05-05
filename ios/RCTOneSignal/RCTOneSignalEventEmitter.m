@@ -254,6 +254,12 @@ RCT_EXPORT_METHOD(promptForPushNotificationsWithUserResponse:(RCTResponseSenderB
     }];
 }
 
+RCT_EXPORT_METHOD(registerForProvisionalAuthorization:(RCTResponseSenderBlock)callback) {
+    [OneSignal registerForProvisionalAuthorization:^(BOOL accepted) {
+        callback(@[@(accepted)]);
+    }];
+}
+
 RCT_EXPORT_METHOD(sendTag:(NSString *)key value:(NSString*)value) {
     [OneSignal sendTag:key value:value];
 }

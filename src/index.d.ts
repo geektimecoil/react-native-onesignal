@@ -167,6 +167,17 @@ declare module 'react-native-onesignal' {
          * @returns void
          */
         promptForPushNotificationsWithUserResponse(handler?: (response: boolean) => void): void;
+        
+        /**
+         * Only applies to iOS (does nothing on Android as it always silently registers)
+         * Request for Direct-To-History push notification authorization
+         * 
+         * For more information: https://documentation.onesignal.com/docs/ios-customizations#provisional-push-notifications
+         * 
+         * @param  {(response:boolean)=>void} handler
+         * @returns void
+         */
+        registerForProvisionalAuthorization(handler?: (response: boolean) => void): void;
 
         /**
          * Disable the push notification subscription to OneSignal.

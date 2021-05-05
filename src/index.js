@@ -84,6 +84,17 @@ export default class OneSignal {
         } else {
             console.log("promptForPushNotificationsWithUserResponse: this function is not supported on Android");
         }
+    }  
+    
+    static registerForProvisionalAuthorization(handler) {
+        if (!checkIfInitialized(RNOneSignal)) return;
+
+        if (Platform.OS === 'ios') {
+            isValidCallback(handler);
+            RNOneSignal.registerForProvisionalAuthorization(handler);
+        } else {
+            console.log("registerForProvisionalAuthorization: this function is not supported on Android");
+        }
     }
 
     static disablePush(disable) {
