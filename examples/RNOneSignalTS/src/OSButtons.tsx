@@ -185,6 +185,16 @@ class OSButtons extends React.Component<Props, State> {
             }
         )
 
+        const removeGroupedNotificationButton = renderButtonView(
+            "Remove Grouped Notifications With Group ID",
+            color,
+            () => {
+                const groupId: string = this.props.inputFieldValue;
+                loggingFunction("Removing notification with group id:", groupId);
+                OneSignal.removeGroupedNotifications(groupId);
+            }
+        )
+
         const sendTagWithKey = renderButtonView(
             "Send tag with key my_tag",
             color,
@@ -216,7 +226,8 @@ class OSButtons extends React.Component<Props, State> {
             sendTagWithKey,
             getTags,
             deleteTagWithKey,
-            removeNotificationButton
+            removeNotificationButton,
+            removeGroupedNotificationButton
         );
 
         if (Platform.OS === "android") {

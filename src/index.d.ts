@@ -273,6 +273,13 @@ declare module 'react-native-onesignal' {
         removeNotification(id: number): void;
 
         /**
+         * Removes a single OneSignal notification based on its Android notification group Id.
+         * @param  {string} id - notification group id to cancel
+         * @returns void
+         */
+        removeGroupedNotifications(id: string): void;
+
+        /**
          * Allows you to use your own system's user ID's to send push notifications to your users.
          * @param  {string} externalId
          * @param  {(results:object)=>void} handler

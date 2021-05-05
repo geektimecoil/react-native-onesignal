@@ -243,6 +243,16 @@ export default class OneSignal {
         }
     }
 
+    static removeGroupedNotifications(id) {
+        if (!checkIfInitialized(RNOneSignal)) return;
+
+        if (Platform.OS === 'android') {
+            RNOneSignal.removeGroupedNotifications(id);
+        } else {
+            console.log("removeGroupedNotifications: this function is not supported on iOS");
+        }
+    }
+
     /* E X T E R N A L  U S E R  I D */
 
     static setExternalUserId(externalId, varArg1, varArg2) {

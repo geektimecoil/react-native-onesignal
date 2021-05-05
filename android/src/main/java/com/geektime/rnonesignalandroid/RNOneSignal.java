@@ -369,6 +369,11 @@ public class RNOneSignal extends ReactContextBaseJavaModule
    }
 
    @ReactMethod
+   public void removeGroupedNotifications(String id) {
+      OneSignal.removeGroupedNotifications(id);
+   }
+
+   @ReactMethod
    public void requiresUserPrivacyConsent(Promise promise) {
       promise.resolve(OneSignal.requiresUserPrivacyConsent());
    }
