@@ -270,6 +270,14 @@ RCT_EXPORT_METHOD(getTags:(RCTResponseSenderBlock)callback) {
     }];
 }
 
+RCT_REMAP_METHOD(isLocationShared,
+                isLocationSharedResolver:(RCTPromiseResolveBlock)resolve
+                rejecter:(RCTPromiseRejectBlock)reject) {
+
+    BOOL locationShared = [OneSignal isLocationShared];
+    resolve(@(locationShared));
+}
+
 RCT_EXPORT_METHOD(setLocationShared:(BOOL)shared) {
     [OneSignal setLocationShared:shared];
 }

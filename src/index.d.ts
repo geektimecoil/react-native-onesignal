@@ -176,6 +176,12 @@ declare module 'react-native-onesignal' {
         disablePush(disable: boolean): void;
 
         /**
+         * True if the application has location share activated, false otherwise
+         * @returns Promise<boolean>
+         */
+        isLocationShared(): Promise<boolean>;
+
+        /**
          * Disable or enable location collection (defaults to enabled if your app has location permission).
          * @param  {boolean} shared
          * @returns void

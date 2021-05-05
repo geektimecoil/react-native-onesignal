@@ -66,6 +66,11 @@ class OSButtons extends React.Component<Props, State> {
             }
         );
 
+        const locationShared = renderButtonView("is Location Shared", color, async () => {
+            let appHasLocationShared = await OneSignal.isLocationShared();
+            loggingFunction(`Application has location shared active: ${appHasLocationShared}`);
+        })
+
         const setLocationShared = renderButtonView(
             isLocationShared ? "Unshare Location" : "Share Location",
             color,
@@ -85,7 +90,7 @@ class OSButtons extends React.Component<Props, State> {
             }
         );
 
-        elements.push(subscribedButton, setLocationShared, promptLocationButton);
+        elements.push(subscribedButton, locationShared, setLocationShared, promptLocationButton);
 
         if (Platform.OS === 'ios') {
             elements.push(promptForPush);

@@ -94,6 +94,12 @@ export default class OneSignal {
 
     /* L O C A T I O N */
 
+    static isLocationShared() {
+        // must return a promise
+        if (!checkIfInitialized(RNOneSignal)) return Promise.resolve();
+        return RNOneSignal.isLocationShared();
+    }
+
     static setLocationShared(shared) {
         if (!checkIfInitialized(RNOneSignal)) return;
 
