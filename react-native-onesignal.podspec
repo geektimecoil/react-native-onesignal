@@ -21,6 +21,6 @@ Pod::Spec.new do |s|
   # REQUIRED: Ensure you have the following in your project's Podfile
   # pod 'React', :path => '../node_modules/react-native/'
 
-  # The Native OneSignal-iOS-SDK from cocoapods.
-  s.dependency 'OneSignal', '3.4.3'
+  # The Native OneSignal-iOS-SDK XCFramework from cocoapods.
+  s.dependency 'OneSignalXCFramework', '>= 3.0.0', '< 4.0'
 end
