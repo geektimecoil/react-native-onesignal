@@ -3,6 +3,7 @@ jdk: oraclejdk8
 before_install:
 - nvm install 6
 - node --version
+- yes | sdkmanager "platforms;android-27"
 install:
 - cd examples && cd RNOneSignal && npm install
 android:
