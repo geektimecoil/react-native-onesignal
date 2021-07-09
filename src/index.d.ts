@@ -235,6 +235,13 @@ declare module 'react-native-onesignal' {
         getDeviceState(): Promise<DeviceState>;
 
         /**
+         * Allows you to set the app defined language with the OneSignal SDK.
+         * @param  {string} language
+         * @returns void
+         */
+        setLanguage(language: string): void;
+
+        /**
          * Tag a user based on an app event of your choosing so they can be targeted later via segments.
          * @param  {string} key
          * @param  {string} value

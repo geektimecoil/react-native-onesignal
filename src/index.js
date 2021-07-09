@@ -160,6 +160,12 @@ export default class OneSignal {
         return deviceState;
     }
 
+    static setLanguage(language) {
+        if (!isObjectNonNull(RNOneSignal)) return;
+        
+        RNOneSignal.setLanguage(language);
+    }
+
     /* T A G S */
 
     static sendTag(key, value) {

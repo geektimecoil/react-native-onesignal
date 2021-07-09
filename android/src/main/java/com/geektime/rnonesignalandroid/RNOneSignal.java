@@ -255,6 +255,11 @@ public class RNOneSignal extends ReactContextBaseJavaModule
    }
 
    @ReactMethod
+   public void setLanguage(String language) {
+      OneSignal.setLanguage(language);
+   }
+
+   @ReactMethod
    public void disablePush(boolean disable) {
       OneSignal.disablePush(disable);
    }

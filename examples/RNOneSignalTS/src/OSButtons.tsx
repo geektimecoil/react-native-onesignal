@@ -135,6 +135,15 @@ class OSButtons extends React.Component<Props, State> {
             loggingFunction(`Device State: ${JSON.stringify(deviceState)}`);
         })
 
+        const setLanguageButton = renderButtonView(
+            "Set Language", 
+            color, 
+            () => {
+                loggingFunction('Attempting to set language: ', this.props.inputFieldValue);
+                OneSignal.setLanguage(this.props.inputFieldValue);
+            }
+        );
+
         const requireUserProvideConsent = renderButtonView(
             this.state.requireUserConsent ? "Remove User Privacy Consent Requirement" : "Require User Privacy Consent",
             color,
@@ -167,6 +176,7 @@ class OSButtons extends React.Component<Props, State> {
 
         elements.push(
             deviceStateButton,
+            setLanguageButton,
             requireUserProvideConsent,
             appRequireUserProvideConsent,
             provideUserConsentButton,

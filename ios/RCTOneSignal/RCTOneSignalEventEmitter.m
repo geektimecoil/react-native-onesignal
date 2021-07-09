@@ -199,6 +199,10 @@ RCT_REMAP_METHOD(getDeviceState,
     }
 }
 
+RCT_EXPORT_METHOD(setLanguage:(NSString *)language) {
+    [OneSignal setLanguage:language];
+}
+
 RCT_EXPORT_METHOD(setNotificationOpenedHandler) {
     [OneSignal setNotificationOpenedHandler:^(OSNotificationOpenedResult *result) {
         [RCTOneSignalEventEmitter sendEventWithName:@"OneSignal-remoteNotificationOpened" withBody:[result jsonRepresentation]];
