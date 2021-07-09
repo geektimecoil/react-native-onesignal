@@ -11,8 +11,6 @@
 
 + (RCTOneSignal *) sharedInstance;
 
-@property (nonatomic) BOOL didStartObserving;
-
 - (void)initOneSignal:(NSDictionary *)launchOptions;
 
 @end

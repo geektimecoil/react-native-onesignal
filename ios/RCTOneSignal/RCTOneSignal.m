@@ -13,24 +13,12 @@
 #import "RCTOneSignal.h"
 #import "RCTOneSignalEventEmitter.h"
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
-
-#define UIUserNotificationTypeAlert UIRemoteNotificationTypeAlert
-#define UIUserNotificationTypeBadge UIRemoteNotificationTypeBadge
-#define UIUserNotificationTypeSound UIRemoteNotificationTypeSound
-#define UIUserNotificationTypeNone  UIRemoteNotificationTypeNone
-#define UIUserNotificationType      UIRemoteNotificationType
-
-#endif
-
 @interface RCTOneSignal ()
 @end
 
 @implementation RCTOneSignal {
     BOOL didInitialize;
 }
-
-OSNotificationOpenedResult* coldStartOSNotificationOpenedResult;
 
 + (RCTOneSignal *) sharedInstance {
     static dispatch_once_t token = 0;
@@ -48,26 +36,6 @@ OSNotificationOpenedResult* coldStartOSNotificationOpenedResult;
 
     [OneSignal initWithLaunchOptions:launchOptions];
     didInitialize = true;
-}
-
-- (void)handleRemoteNotificationOpened:(NSString *)result {
-    NSDictionary *json = [self jsonObjectWithString:result];
-
-    if (json)
-        [self sendEvent:OSEventString(NotificationOpened) withBody:json];
-}
-
-- (NSDictionary *)jsonObjectWithString:(NSString *)jsonString {
-    NSError *jsonError;
-    NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&jsonError];
-
-    if (jsonError) {
-        [OneSignal onesignalLog:ONE_S_LL_ERROR message:[NSString stringWithFormat:@"Unable to serialize JSON string into an object: %@", jsonError]];
-        return nil;
-    }
-
-    return json;
 }
 
 - (void)sendEvent:(NSString *)eventName withBody:(NSDictionary *)body {
@@ -88,10 +56,6 @@ OSNotificationOpenedResult* coldStartOSNotificationOpenedResult;
 
 - (void)onOSPermissionChanged:(OSPermissionStateChanges *)stateChanges {
     [self sendEvent:OSEventString(PermissionChanged) withBody:stateChanges.toDictionary];
-}
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end
